@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/reveal";
-import { whatsappLink, AGENDAR_MESSAGE } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/whatsapp";
+import { getContent } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 
 const ARROW = (
   <svg viewBox="0 0 24 24" fill="none">
@@ -15,107 +17,20 @@ const ARROW = (
   </svg>
 );
 
-const DIFFERENTIATORS = [
-  {
-    n: "01",
-    title: "Atención personalizada",
-    desc: "Cada plan quirúrgico se diseña a partir de tu anatomía y tus objetivos.",
-  },
-  {
-    n: "02",
-    title: "Tecnología de vanguardia",
-    desc: "Instalaciones y equipamiento pensados para la precisión y la seguridad.",
-  },
-  {
-    n: "03",
-    title: "Acompañamiento integral",
-    desc: "Del diagnóstico inicial al seguimiento posoperatorio, un mismo equipo te acompaña.",
-  },
-  {
-    n: "04",
-    title: "Discreción y confianza",
-    desc: "Un entorno privado y humano, donde cada decisión se toma con información clara.",
-  },
-];
-
 const PROCEDURES = [
-  {
-    n: "01",
-    img: "/images/proc-rinoplastia.jpg",
-    title: "Rinoplastia",
-    desc: "Armonía facial con resultados naturales, adaptados a cada rostro.",
-    className: "aurea-proc-card--wide aurea-proc-card--tall",
-  },
-  {
-    n: "02",
-    img: "/images/proc-liposuccion.jpg",
-    title: "Liposucción",
-    desc: "Contorno corporal preciso y definido.",
-    className: "aurea-proc-card--wide",
-  },
-  {
-    n: "03",
-    img: "/images/proc-aumento-mamario.jpg",
-    title: "Aumento mamario",
-    desc: "Proporciones equilibradas que respetan tu anatomía.",
-    className: "aurea-proc-card--wide",
-  },
-  {
-    n: "04",
-    img: "/images/proc-lifting-facial.jpg",
-    title: "Lifting facial",
-    desc: "Rejuvenecimiento sutil, sin perder la expresión propia.",
-    className: "aurea-proc-card--std",
-  },
-  {
-    n: "05",
-    img: "/images/proc-abdominoplastia.jpg",
-    title: "Abdominoplastia",
-    desc: "Firmeza y definición para el área abdominal.",
-    className: "aurea-proc-card--std",
-  },
-  {
-    n: "06",
-    img: "/images/proc-blefaroplastia.jpg",
-    title: "Blefaroplastia",
-    desc: "Una mirada descansada y renovada.",
-    className: "aurea-proc-card--std",
-  },
+  { n: "01", img: "/images/proc-rinoplastia.jpg", className: "aurea-proc-card--wide aurea-proc-card--tall" },
+  { n: "02", img: "/images/proc-liposuccion.jpg", className: "aurea-proc-card--wide" },
+  { n: "03", img: "/images/proc-aumento-mamario.jpg", className: "aurea-proc-card--wide" },
+  { n: "04", img: "/images/proc-lifting-facial.jpg", className: "aurea-proc-card--std" },
+  { n: "05", img: "/images/proc-abdominoplastia.jpg", className: "aurea-proc-card--std" },
+  { n: "06", img: "/images/proc-blefaroplastia.jpg", className: "aurea-proc-card--std" },
 ];
 
-const TEAM = [
-  { name: "Dra. Laura Sofía Medina", role: "Directora médica · Cirugía Plástica" },
-  { name: "Dr. Andrés Salgado", role: "Cirugía Plástica y Reconstructiva" },
-  { name: "Dra. Camila Torres", role: "Cirugía Plástica" },
-  { name: "Dr. Mateo Restrepo", role: "Anestesiología" },
-  { name: "Valentina Rojas", role: "Enfermería Quirúrgica" },
-  { name: "Daniela Pardo", role: "Instrumentación Quirúrgica" },
-];
+const num = (i: number) => String(i + 1).padStart(2, "0");
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Consulta inicial",
-    desc: "Conversamos sobre tus objetivos y evaluamos tu caso en detalle.",
-  },
-  {
-    n: "02",
-    title: "Plan personalizado",
-    desc: "Diseñamos una propuesta adaptada a tu anatomía y expectativas.",
-  },
-  {
-    n: "03",
-    title: "Procedimiento",
-    desc: "Ejecutamos el plan acordado con los más altos estándares de precisión.",
-  },
-  {
-    n: "04",
-    title: "Seguimiento",
-    desc: "Te acompañamos en cada etapa de tu recuperación.",
-  },
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const t = getContent(await getLocale());
+  const h = t.home;
   return (
     <>
       {/* 01 — HERO */}
@@ -123,7 +38,7 @@ export default function HomePage() {
         <div className="aurea-hero__media">
           <Image
             src="/images/plastic-surgery-trends-2023.webp"
-            alt="Precisión y planificación previa a un procedimiento estético"
+            alt={h.heroAlt}
             fill
             priority
             sizes="100vw"
@@ -133,24 +48,23 @@ export default function HomePage() {
         <div className="aurea-hero__scrim"></div>
         <div className="aurea-hero__content aurea-container">
           <span className="aurea-kicker">Aurea Plastic Surgery</span>
-          <h1>Cirugía plástica con propósito</h1>
+          <h1>{h.heroTitle}</h1>
           <div className="aurea-hero__row">
             <p className="aurea-lead">
-              Explora nuestros procedimientos o agenda tu primera consulta y
-              descubre el camino pensado para ti.
+              {h.heroLead}
             </p>
             <a
-              href={whatsappLink(AGENDAR_MESSAGE)}
+              href={whatsappLink(t.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="aurea-btn aurea-btn--gold"
             >
-              Agenda tu consulta
+              {t.ui.bookCta}
               {ARROW}
             </a>
           </div>
         </div>
-        <span className="aurea-hero__scroll">Descubre</span>
+        <span className="aurea-hero__scroll">{h.scroll}</span>
       </section>
 
       {/* 02 — FILOSOFÍA + DIFERENCIADORES */}
@@ -158,13 +72,13 @@ export default function HomePage() {
         <div className="aurea-container">
           <div className="aurea-intro">
             <Reveal className="aurea-intro__text">
-              <span className="aurea-kicker">La clínica</span>
-              <h2 className="aurea-h2">Un enfoque distinto en cada detalle</h2>
+              <span className="aurea-kicker">{h.clinicKicker}</span>
+              <h2 className="aurea-h2">{h.clinicTitle}</h2>
             </Reveal>
             <Reveal className="aurea-intro__media">
               <Image
                 src="/images/la-clinica.jpg"
-                alt="Fachada de Aurea Plastic Surgery al atardecer"
+                alt={h.clinicAlt}
                 fill
                 sizes="(min-width:1024px) 40vw, 90vw"
                 style={{ objectFit: "cover" }}
@@ -173,9 +87,9 @@ export default function HomePage() {
           </div>
 
           <div className="aurea-diffs">
-            {DIFFERENTIATORS.map((d) => (
-              <Reveal key={d.n} className="aurea-diffs__item">
-                <span className="aurea-diffs__num">{d.n}</span>
+            {h.diffs.map((d, i) => (
+              <Reveal key={i} className="aurea-diffs__item">
+                <span className="aurea-diffs__num">{num(i)}</span>
                 <h3>{d.title}</h3>
                 <p>{d.desc}</p>
               </Reveal>
@@ -189,26 +103,26 @@ export default function HomePage() {
         <div className="aurea-container">
           <Reveal className="aurea-procs__head">
             <div>
-              <span className="aurea-kicker">Procedimientos</span>
+              <span className="aurea-kicker">{h.procsKicker}</span>
               <h2 className="aurea-h2" style={{ marginTop: "1.1rem" }}>
-                Cada procedimiento,
+                {h.procsTitle[0]}
                 <br />
-                pensado a tu medida
+                {h.procsTitle[1]}
               </h2>
             </div>
             <Link href="/procedimientos" className="aurea-btn aurea-btn--line">
-              Ver todos los procedimientos
+              {h.procsAll}
               {ARROW}
             </Link>
           </Reveal>
 
           <div className="aurea-procs__grid">
-            {PROCEDURES.map((p) => (
+            {PROCEDURES.map((p, i) => (
               <div key={p.n} className={`aurea-proc-card ${p.className} reveal is-visible`}>
                 <div className="aurea-proc-card__media">
                   <Image
                     src={p.img}
-                    alt={p.title}
+                    alt={t.procedures[i].title}
                     fill
                     sizes="(min-width:1024px) 33vw, 50vw"
                     style={{ objectFit: "cover" }}
@@ -216,8 +130,8 @@ export default function HomePage() {
                 </div>
                 <div className="aurea-proc-card__label">
                   <span className="n">{p.n}</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
+                  <h3>{t.procedures[i].title}</h3>
+                  <p>{t.procedures[i].desc}</p>
                 </div>
               </div>
             ))}
@@ -231,25 +145,24 @@ export default function HomePage() {
           <Reveal className="aurea-surgeon__media">
             <Image
               src="/images/aurea-equipo-directora.jpg"
-              alt="Dra. Laura Sofía Medina, directora médica de Aurea Plastic Surgery"
+              alt={h.directorAlt}
               fill
               sizes="(min-width:1024px) 40vw, 90vw"
               style={{ objectFit: "cover" }}
             />
           </Reveal>
           <Reveal className="aurea-surgeon__text">
-            <span className="aurea-kicker on-dark">El equipo</span>
+            <span className="aurea-kicker on-dark">{h.teamKicker}</span>
             <h2 className="aurea-h2 on-dark">
-              Detrás de cada resultado, un equipo dedicado
+              {h.teamTitle}
             </h2>
             <p className="aurea-lead">
-              Acompañamos cada procedimiento con el mismo equipo, del
-              diagnóstico inicial al seguimiento posoperatorio.
+              {h.teamLead}
             </p>
             <div className="aurea-surgeon__facts">
-              <span className="aurea-surgeon__name">Dra. Laura Sofía Medina</span>
+              <span className="aurea-surgeon__name">{h.team[0].name}</span>
               <span className="aurea-surgeon__role">
-                Directora médica · Cirugía Plástica, Estética y Reconstructiva
+                {h.directorRole}
               </span>
             </div>
           </Reveal>
@@ -259,17 +172,17 @@ export default function HomePage() {
           <Reveal className="aurea-team__photo">
             <Image
               src="/images/aurea-equipo-completo.jpg"
-              alt="Equipo clínico de Aurea Plastic Surgery"
+              alt={h.teamAlt}
               fill
               sizes="(min-width:1024px) 80vw, 92vw"
               style={{ objectFit: "cover" }}
             />
           </Reveal>
           <Reveal className="aurea-team__grid">
-            {TEAM.map((t) => (
-              <div key={t.name} className="aurea-team__member">
-                <span className="aurea-team__member-name">{t.name}</span>
-                <span className="aurea-team__member-role">{t.role}</span>
+            {h.team.map((m) => (
+              <div key={m.name} className="aurea-team__member">
+                <span className="aurea-team__member-name">{m.name}</span>
+                <span className="aurea-team__member-role">{m.role}</span>
               </div>
             ))}
           </Reveal>
@@ -280,15 +193,15 @@ export default function HomePage() {
       <section className="aurea-section">
         <div className="aurea-container">
           <Reveal className="aurea-steps__head">
-            <span className="aurea-kicker">El proceso</span>
+            <span className="aurea-kicker">{h.stepsKicker}</span>
             <h2 className="aurea-h2" style={{ marginTop: "1.1rem" }}>
-              Un camino claro, paso a paso
+              {h.stepsTitle}
             </h2>
           </Reveal>
           <div className="aurea-steps">
-            {STEPS.map((s) => (
-              <Reveal key={s.n} className="aurea-step">
-                <span className="aurea-step__num">{s.n}</span>
+            {t.steps.map((s, i) => (
+              <Reveal key={i} className="aurea-step">
+                <span className="aurea-step__num">{num(i)}</span>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
               </Reveal>
@@ -297,7 +210,7 @@ export default function HomePage() {
           <Reveal className="" >
             <div style={{ marginTop: "clamp(2.5rem,2rem+2vw,4rem)" }}>
               <Link href="/proceso-de-consulta" className="aurea-btn aurea-btn--line">
-                Conocer el proceso completo
+                {h.stepsAll}
                 {ARROW}
               </Link>
             </div>
@@ -310,9 +223,9 @@ export default function HomePage() {
         <div className="aurea-container">
           <Reveal className="">
             <div style={{ marginBottom: "clamp(2.5rem,2rem+2vw,4rem)" }}>
-              <span className="aurea-kicker">Atmósfera Aurea</span>
+              <span className="aurea-kicker">{h.spaceKicker}</span>
               <h2 className="aurea-h2" style={{ marginTop: "1.1rem" }}>
-                La estética que guía cada espacio
+                {h.spaceTitle}
               </h2>
             </div>
           </Reveal>
@@ -320,32 +233,32 @@ export default function HomePage() {
             <div className="aurea-gallery__item aurea-gallery__item--a">
               <Image
                 src="/images/aurea-espacio-1.jpg"
-                alt="Atmósfera Aurea — pasillo interior"
+                alt={h.spaceAlts[0]}
                 fill
                 sizes="(min-width:1024px) 45vw, 90vw"
                 style={{ objectFit: "cover" }}
               />
-              <span className="aurea-gallery__caption">Atmósfera Aurea</span>
+              <span className="aurea-gallery__caption">{h.spaceCaption}</span>
             </div>
             <div className="aurea-gallery__item aurea-gallery__item--tall">
               <Image
                 src="/images/aurea-espacio-2.jpg"
-                alt="Atmósfera Aurea — fachada y entrada"
+                alt={h.spaceAlts[1]}
                 fill
                 sizes="(min-width:1024px) 25vw, 45vw"
                 style={{ objectFit: "cover" }}
               />
-              <span className="aurea-gallery__caption">Atmósfera Aurea</span>
+              <span className="aurea-gallery__caption">{h.spaceCaption}</span>
             </div>
             <div className="aurea-gallery__item aurea-gallery__item--tall">
               <Image
                 src="/images/aurea-espacio-3.jpg"
-                alt="Atmósfera Aurea — materiales y texturas"
+                alt={h.spaceAlts[2]}
                 fill
                 sizes="(min-width:1024px) 25vw, 45vw"
                 style={{ objectFit: "cover" }}
               />
-              <span className="aurea-gallery__caption">Atmósfera Aurea</span>
+              <span className="aurea-gallery__caption">{h.spaceCaption}</span>
             </div>
           </Reveal>
         </div>
@@ -354,28 +267,25 @@ export default function HomePage() {
       {/* 07 — CTA FINAL */}
       <section className="aurea-cta">
         <div className="aurea-container aurea-cta__inner">
-          <span className="aurea-kicker">Tu momento</span>
+          <span className="aurea-kicker">{t.cta.kicker}</span>
           <h2>
-            Tu piel, tu decisión,
+            {t.cta.title[0]}
             <br />
-            tu momento
+            {t.cta.title[1]}
           </h2>
-          <p>
-            Explora nuestros procedimientos o agenda tu primera consulta y
-            descubre el camino pensado para ti.
-          </p>
+          <p>{t.cta.text}</p>
           <div className="aurea-cta__actions">
             <a
-              href={whatsappLink(AGENDAR_MESSAGE)}
+              href={whatsappLink(t.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="aurea-btn aurea-btn--gold"
             >
-              Agenda tu consulta
+              {t.ui.bookCta}
               {ARROW}
             </a>
             <Link href="/procedimientos" className="aurea-btn aurea-btn--ghost-light">
-              Ver procedimientos
+              {t.ui.viewProcedures}
             </Link>
           </div>
         </div>

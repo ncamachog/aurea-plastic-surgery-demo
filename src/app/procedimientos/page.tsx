@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Reveal from "@/components/reveal";
-import { whatsappLink, AGENDAR_MESSAGE } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/whatsapp";
+import { getContent } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 
-export const metadata: Metadata = {
-  title: "Procedimientos — AUREA Plastic Surgery",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: getContent(await getLocale()).proceduresPage.metaTitle };
+}
 
 const ARROW_SM = (
   <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
@@ -19,46 +21,18 @@ const ARROW_SM = (
   </svg>
 );
 
-const PROCEDURES = [
-  {
-    n: "01",
-    img: "/images/proc-rinoplastia.jpg",
-    title: "Rinoplastia",
-    desc: "Armonía facial con resultados naturales, adaptados a cada rostro.",
-  },
-  {
-    n: "02",
-    img: "/images/proc-liposuccion.jpg",
-    title: "Liposucción",
-    desc: "Contorno corporal preciso y definido.",
-  },
-  {
-    n: "03",
-    img: "/images/proc-aumento-mamario.jpg",
-    title: "Aumento mamario",
-    desc: "Proporciones equilibradas que respetan tu anatomía.",
-  },
-  {
-    n: "04",
-    img: "/images/proc-lifting-facial.jpg",
-    title: "Lifting facial",
-    desc: "Rejuvenecimiento sutil, sin perder la expresión propia.",
-  },
-  {
-    n: "05",
-    img: "/images/proc-abdominoplastia.jpg",
-    title: "Abdominoplastia",
-    desc: "Firmeza y definición para el área abdominal.",
-  },
-  {
-    n: "06",
-    img: "/images/proc-blefaroplastia.jpg",
-    title: "Blefaroplastia",
-    desc: "Una mirada descansada y renovada.",
-  },
+const IMGS = [
+  "/images/proc-rinoplastia.jpg",
+  "/images/proc-liposuccion.jpg",
+  "/images/proc-aumento-mamario.jpg",
+  "/images/proc-lifting-facial.jpg",
+  "/images/proc-abdominoplastia.jpg",
+  "/images/proc-blefaroplastia.jpg",
 ];
 
-export default function ProcedimientosPage() {
+export default async function ProcedimientosPage() {
+  const t = getContent(await getLocale());
+  const pg = t.proceduresPage;
   return (
     <>
       <section className="aurea-page-hero">
@@ -71,23 +45,23 @@ export default function ProcedimientosPage() {
           />
         </div>
         <div className="aurea-container" style={{ position: "relative" }}>
-          <span className="aurea-kicker">Procedimientos</span>
+          <span className="aurea-kicker">{pg.kicker}</span>
           <h1>
-            Cada procedimiento,
+            {pg.title[0]}
             <br />
-            pensado a tu medida
+            {pg.title[1]}
           </h1>
         </div>
       </section>
 
       <section className="aurea-section">
         <div className="aurea-container">
-          {PROCEDURES.map((p) => (
-            <Reveal key={p.n} className="aurea-process-row">
-              <span className="aurea-process-row__num">{p.n}</span>
+          {t.procedures.map((p, i) => (
+            <Reveal key={i} className="aurea-process-row">
+              <span className="aurea-process-row__num">{String(i + 1).padStart(2, "0")}</span>
               <div className="aurea-process-row__media">
                 <Image
-                  src={p.img}
+                  src={IMGS[i]}
                   alt={p.title}
                   fill
                   sizes="(min-width:1024px) 45vw, 90vw"
@@ -99,12 +73,12 @@ export default function ProcedimientosPage() {
                 <p>{p.desc}</p>
                 <div style={{ marginTop: "1.4rem" }}>
                   <a
-                    href={whatsappLink(AGENDAR_MESSAGE)}
+                    href={whatsappLink(t.whatsappMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="aurea-btn aurea-btn--line"
                   >
-                    Agendar consulta
+                    {t.ui.book}
                     {ARROW_SM}
                   </a>
                 </div>
@@ -116,20 +90,17 @@ export default function ProcedimientosPage() {
 
       <section className="aurea-cta">
         <div className="aurea-container aurea-cta__inner">
-          <span className="aurea-kicker">Tu momento</span>
-          <h2>¿Listo para dar el siguiente paso?</h2>
-          <p>
-            Agenda tu primera consulta y descubre el plan pensado para tu
-            anatomía y tus objetivos.
-          </p>
+          <span className="aurea-kicker">{t.cta.kicker}</span>
+          <h2>{pg.ctaTitle}</h2>
+          <p>{pg.ctaText}</p>
           <div className="aurea-cta__actions">
             <a
-              href={whatsappLink(AGENDAR_MESSAGE)}
+              href={whatsappLink(t.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="aurea-btn aurea-btn--gold"
             >
-              Agenda tu consulta
+              {t.ui.bookCta}
               <svg viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 12h14M13 6l6 6-6 6"

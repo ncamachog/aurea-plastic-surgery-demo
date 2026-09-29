@@ -2,40 +2,24 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/reveal";
-import { whatsappLink, AGENDAR_MESSAGE } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/whatsapp";
+import { getContent } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 
-export const metadata: Metadata = {
-  title: "Proceso de Consulta — AUREA Plastic Surgery",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: getContent(await getLocale()).processPage.metaTitle };
+}
 
-const STEPS = [
-  {
-    n: "01",
-    img: "/images/consulta-01-inicial.jpg",
-    title: "Consulta inicial",
-    desc: "Conversamos sobre tus objetivos y evaluamos tu caso en detalle.",
-  },
-  {
-    n: "02",
-    img: "/images/consulta-02-plan.jpg",
-    title: "Plan personalizado",
-    desc: "Diseñamos una propuesta adaptada a tu anatomía y expectativas.",
-  },
-  {
-    n: "03",
-    img: "/images/consulta-03-procedimiento.jpg",
-    title: "Procedimiento",
-    desc: "Ejecutamos el plan acordado con los más altos estándares de precisión.",
-  },
-  {
-    n: "04",
-    img: "/images/consulta-04-seguimiento.jpg",
-    title: "Seguimiento",
-    desc: "Te acompañamos en cada etapa de tu recuperación.",
-  },
+const IMGS = [
+  "/images/consulta-01-inicial.jpg",
+  "/images/consulta-02-plan.jpg",
+  "/images/consulta-03-procedimiento.jpg",
+  "/images/consulta-04-seguimiento.jpg",
 ];
 
-export default function ProcesoDeConsultaPage() {
+export default async function ProcesoDeConsultaPage() {
+  const t = getContent(await getLocale());
+  const pg = t.processPage;
   return (
     <>
       <section className="aurea-page-hero">
@@ -48,23 +32,23 @@ export default function ProcesoDeConsultaPage() {
           />
         </div>
         <div className="aurea-container" style={{ position: "relative" }}>
-          <span className="aurea-kicker">El proceso</span>
+          <span className="aurea-kicker">{pg.kicker}</span>
           <h1>
-            Un camino claro,
+            {pg.title[0]}
             <br />
-            paso a paso
+            {pg.title[1]}
           </h1>
         </div>
       </section>
 
       <section className="aurea-section">
         <div className="aurea-container">
-          {STEPS.map((s) => (
-            <Reveal key={s.n} className="aurea-process-row">
-              <span className="aurea-process-row__num">{s.n}</span>
+          {t.steps.map((s, i) => (
+            <Reveal key={i} className="aurea-process-row">
+              <span className="aurea-process-row__num">{String(i + 1).padStart(2, "0")}</span>
               <div className="aurea-process-row__media aurea-process-row__media--contain">
                 <Image
-                  src={s.img}
+                  src={IMGS[i]}
                   alt={s.title}
                   fill
                   sizes="(min-width:1024px) 45vw, 90vw"
@@ -82,24 +66,21 @@ export default function ProcesoDeConsultaPage() {
 
       <section className="aurea-cta">
         <div className="aurea-container aurea-cta__inner">
-          <span className="aurea-kicker">Tu momento</span>
+          <span className="aurea-kicker">{t.cta.kicker}</span>
           <h2>
-            Tu piel, tu decisión,
+            {t.cta.title[0]}
             <br />
-            tu momento
+            {t.cta.title[1]}
           </h2>
-          <p>
-            Explora nuestros procedimientos o agenda tu primera consulta y
-            descubre el camino pensado para ti.
-          </p>
+          <p>{t.cta.text}</p>
           <div className="aurea-cta__actions">
             <a
-              href={whatsappLink(AGENDAR_MESSAGE)}
+              href={whatsappLink(t.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="aurea-btn aurea-btn--gold"
             >
-              Agenda tu consulta
+              {t.ui.bookCta}
               <svg viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 12h14M13 6l6 6-6 6"
@@ -111,7 +92,7 @@ export default function ProcesoDeConsultaPage() {
               </svg>
             </a>
             <Link href="/procedimientos" className="aurea-btn aurea-btn--ghost-light">
-              Ver procedimientos
+              {t.ui.viewProcedures}
             </Link>
           </div>
         </div>

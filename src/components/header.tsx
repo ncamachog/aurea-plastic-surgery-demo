@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { whatsappLink, AGENDAR_MESSAGE } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/whatsapp";
+import LanguageSwitcher from "./language-switcher";
+import { useLocale } from "./locale-provider";
 
-const NAV_ITEMS = [
-  { href: "/", label: "Inicio" },
-  { href: "/procedimientos", label: "Procedimientos" },
-  { href: "/proceso-de-consulta", label: "Proceso de Consulta" },
-];
+const NAV_HREFS = ["/", "/procedimientos", "/proceso-de-consulta"];
 
 export default function Header() {
   const pathname = usePathname();
+  const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -40,26 +39,27 @@ export default function Header() {
             AUREA <strong>Plastic Surgery</strong>
           </Link>
 
-          <nav className="aurea-nav" aria-label="Navegación principal">
-            {NAV_ITEMS.map((item) => (
+          <nav className="aurea-nav" aria-label={t.ui.navAria}>
+            {NAV_HREFS.map((href) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className={pathname === item.href ? "is-active" : ""}
+                key={href}
+                href={href}
+                className={pathname === href ? "is-active" : ""}
               >
-                {item.label}
+                {t.ui.nav[href]}
               </Link>
             ))}
           </nav>
 
           <div className="aurea-header-actions">
+            <LanguageSwitcher />
             <a
-              href={whatsappLink(AGENDAR_MESSAGE)}
+              href={whatsappLink(t.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="aurea-btn aurea-btn--gold"
             >
-              Agendar consulta
+              {t.ui.book}
               <svg viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 12h14M13 6l6 6-6 6"
@@ -72,7 +72,7 @@ export default function Header() {
             </a>
             <button
               className="aurea-burger"
-              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-label={menuOpen ? t.ui.closeMenu : t.ui.openMenu}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
             >
@@ -85,22 +85,22 @@ export default function Header() {
       </header>
 
       <div className="aurea-mobile-panel">
-        {NAV_ITEMS.map((item) => (
+        {NAV_HREFS.map((href) => (
           <Link
-            key={item.href}
-            href={item.href}
-            className={pathname === item.href ? "is-active" : ""}
+            key={href}
+            href={href}
+            className={pathname === href ? "is-active" : ""}
           >
-            {item.label}
+            {t.ui.nav[href]}
           </Link>
         ))}
         <a
-          href={whatsappLink(AGENDAR_MESSAGE)}
+          href={whatsappLink(t.whatsappMessage)}
           target="_blank"
           rel="noopener noreferrer"
           className="aurea-btn aurea-btn--gold"
         >
-          Agendar consulta
+          {t.ui.book}
           <svg viewBox="0 0 24 24" fill="none">
             <path
               d="M5 12h14M13 6l6 6-6 6"

@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import WhatsAppButton from "@/components/whatsapp-button";
+import { LocaleProvider } from "@/components/locale-provider";
+import { getContent } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -20,22 +23,24 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "AUREA Plastic Surgery — Cirugía plástica con propósito",
-  description:
-    "Cirugía plástica con propósito: un enfoque distinto en cada detalle, de la primera consulta al seguimiento posoperatorio.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const c = getContent(await getLocale());
+  return { title: c.siteTitle, description: c.description };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: LayoutProps<"/">) {
+  const locale = await getLocale();
   return (
-    <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${fraunces.variable} ${inter.variable}`}>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <LocaleProvider locale={locale}>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppButton />
+        </LocaleProvider>
       </body>
     </html>
   );

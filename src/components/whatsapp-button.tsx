@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { whatsappLink, AGENDAR_MESSAGE } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/whatsapp";
+import { useLocale } from "./locale-provider";
 
 export default function WhatsAppButton() {
+  const { t } = useLocale();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -13,11 +15,11 @@ export default function WhatsAppButton() {
 
   return (
     <a
-      href={whatsappLink(AGENDAR_MESSAGE)}
+      href={whatsappLink(t.whatsappMessage)}
       target="_blank"
       rel="noopener noreferrer"
       className={`aurea-whatsapp${visible ? " is-visible" : ""}`}
-      aria-label="Escríbenos por WhatsApp"
+      aria-label={t.ui.whatsappAria}
     >
       <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

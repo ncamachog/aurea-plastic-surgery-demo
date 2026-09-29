@@ -215,6 +215,12 @@ button{ font: inherit; }
 .aurea-header-actions{ display:flex; align-items:center; gap:1.6rem; }
 .aurea-header .aurea-btn--gold{ padding: .85rem 1.5rem; }
 
+.aurea-lang{ display:flex; align-items:center; gap:2px; padding:3px; border-radius:999px; border:1px solid currentColor; color:var(--c-on-dark); opacity:.9; }
+.aurea-lang button{ min-width:2.2rem; padding:.35rem .55rem; border:0; border-radius:999px; background:transparent; color:inherit; font:500 .72rem var(--font-sans); letter-spacing:.12em; cursor:pointer; transition:background .3s, color .3s; }
+.aurea-lang button.is-active{ background:var(--c-on-dark); color:var(--c-dark-2); }
+.aurea-header.is-scrolled .aurea-lang{ color:var(--c-dark-2); }
+.aurea-header.is-scrolled .aurea-lang button.is-active{ background:var(--c-dark-2); color:var(--c-on-dark); }
+.menu-open .aurea-header .aurea-lang{ color:var(--c-on-dark); }
 .aurea-burger{
   display:none; width: 26px; height:18px; position:relative; background:none; border:0; cursor:pointer; padding:0;
 }

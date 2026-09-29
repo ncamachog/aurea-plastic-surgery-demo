@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getContent } from "@/lib/content";
+import { getLocale } from "@/lib/locale";
 
-export default function Footer() {
+export default async function Footer() {
+  const t = getContent(await getLocale());
+  const f = t.footer;
   return (
     <footer className="aurea-footer">
       <div className="aurea-container">
@@ -9,32 +13,29 @@ export default function Footer() {
             <Link href="/" className="aurea-logo">
               AUREA <strong>Plastic Surgery</strong>
             </Link>
-            <p>
-              Cirugía plástica con propósito: un enfoque distinto en cada
-              detalle, de la primera consulta al seguimiento posoperatorio.
-            </p>
+            <p>{f.desc}</p>
           </div>
 
           <div className="aurea-footer__col">
-            <h4>Navegación</h4>
+            <h4>{f.nav}</h4>
             <ul>
               <li>
-                <Link href="/">Inicio</Link>
+                <Link href="/">{t.ui.nav["/"]}</Link>
               </li>
               <li>
-                <Link href="/procedimientos">Procedimientos</Link>
+                <Link href="/procedimientos">{t.ui.nav["/procedimientos"]}</Link>
               </li>
               <li>
-                <Link href="/proceso-de-consulta">Proceso de Consulta</Link>
+                <Link href="/proceso-de-consulta">{t.ui.nav["/proceso-de-consulta"]}</Link>
               </li>
             </ul>
           </div>
 
           <div className="aurea-footer__col">
-            <h4>Contacto</h4>
+            <h4>{f.contact}</h4>
             <ul>
               <li>
-                <span className="aurea-pending">Dirección pendiente</span>
+                <span className="aurea-pending">{f.addressPending}</span>
               </li>
               <li>
                 <a href="https://wa.me/573103351883" target="_blank" rel="noopener noreferrer">
@@ -42,23 +43,22 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <span className="aurea-pending">Email pendiente</span>
+                <span className="aurea-pending">{f.emailPending}</span>
               </li>
             </ul>
           </div>
 
           <div className="aurea-footer__col">
-            <h4>Síguenos</h4>
-            <span className="aurea-pending">Redes sociales pendientes</span>
+            <h4>{f.follow}</h4>
+            <span className="aurea-pending">{f.socialPending}</span>
           </div>
         </div>
 
         <div className="aurea-footer__bottom">
           <span>
-            &copy; {new Date().getFullYear()} AUREA Plastic Surgery. Todos los
-            derechos reservados.
+            &copy; {new Date().getFullYear()} AUREA Plastic Surgery. {f.rights}
           </span>
-          <span>Aviso de privacidad — próximamente</span>
+          <span>{f.privacy}</span>
         </div>
       </div>
     </footer>
